@@ -1,0 +1,22 @@
+section {
+  height: 100%;
+  width: 100%;
+}
+
+.btnn {
+  border: none;
+  background-color: #f9b707;
+  color: #fff;
+  line-height: 45px;
+  display: inline-block;
+  padding: 0 25px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  margin: 1rem;
+  &:hover {
+    background-color: #1f293d;
+    transition: all linear 0.5s;
+  }
+}

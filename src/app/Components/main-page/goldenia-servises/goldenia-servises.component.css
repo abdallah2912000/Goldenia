@@ -1,0 +1,92 @@
+* {
+  text-decoration: none;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+.section-head {
+  text-align: center;
+  margin-bottom: 6rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #303133;
+  margin: 0 0 8px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+h2 > span {
+  color: #f9b707;
+}
+
+.services {
+  width: 100%;
+  padding-top: 8rem;
+  padding-bottom: 2rem;
+}
+
+.services-content {
+  margin-top: 4.5rem;
+}
+
+.services-content .col-md-4 {
+  padding-left: 4.5rem;
+  height: 20rem;
+  &:hover h3 {
+    transition: all linear 0.5s;
+    color: #f9b707;
+  }
+  &:hover img {
+    transition: all linear 0.3s;
+    background-color: #f9b707;
+    border: 2px dashed black;
+  }
+}
+
+.services-content img {
+  background-color: #fff;
+  padding: 1rem;
+  width: 4.5rem;
+  margin-bottom: 15px;
+  border: 2px dashed #ddd;
+}
+
+.services-content h3 {
+  margin-bottom: 5px;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+.services-content p {
+  font-size: 0.9rem;
+}
+
+.services-content a {
+  color: #f9b707;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.counter {
+  width: 100%;
+  background-image: url(../../../../assets/images/counter-background.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  padding: 9.5rem;
+  margin-top: 3rem;
+}
+
+.counter h3 {
+  color: #f9b707;
+  margin: 1rem;
+}
+.counter h4 {
+  color: #ddd;
+  text-transform: uppercase;
+  font-size: medium;
+}
