@@ -10,9 +10,6 @@ import { DataForm } from '../models/data-form';
 })
 export class DataFormService {
 
-  // private urlApi = "https://mohammed-abdelhay-s-workspace-vhgo9u.us-east-1.xata.sh/db/goldenia-waitlist:main/tables/waitlist/data?columns=id";
-
-
   constructor(private httpClient: HttpClient) { }
 
   saveData(form: DataForm): Observable<any> {
