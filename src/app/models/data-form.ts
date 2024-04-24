@@ -1,10 +1,9 @@
 export interface DataForm {
-    id: number,
-    name: string,
-    phone: number,
-    country : string,
-    email: string,
-    interstedIn : string[],
-    fees: string,
-    suggestions: string
+  name: string | undefined | null,
+  phone: string | undefined | null,
+  country: string | undefined | null,
+  email: string | undefined | null,
+  interstedIn: string[],
+  fees: string | undefined | null,
+  suggestions: string | undefined | null
 }

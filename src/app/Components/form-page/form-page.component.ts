@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { FormHeaderComponent } from './form-header/form-header.component';
-import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatStepperModule} from '@angular/material/stepper';
+import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {merge} from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { merge } from 'rxjs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { JsonPipe } from '@angular/common';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { DataForm } from '../../models/data-form';
 import { CheckBox } from '../../models/check-box';
 import { DataFormService } from '../../service/data-form.service';
@@ -41,50 +41,55 @@ export class FormPageComponent {
 
   errorMessage = '';
 
-  formGroup = this._formBuilder.group({
+  stepOne = this._formBuilder.group({
     firstCtrl: ['', [Validators.required]],
     phone: ['', [Validators.required]],
-    email: ['',[Validators.required, Validators.email]],
-    country : ['', [Validators.required]]
+    email: ['', [Validators.required, Validators.email]],
+    country: ['', [Validators.required]],
   });
+  stepTwo = this._formBuilder.group({})
+  stepThree = this._formBuilder.group({
+    fees: ['', [Validators.required]]
+  })
+  stepFour = this._formBuilder.group({
+    sug: ['', [Validators.required]]
+  })
 
 
-  isLinear: boolean = true;
-
-  interstes:string[] = [];
+  interstes: string[] = [];
   interstedIn: CheckBox[] = [
     {
       name: "Digitalize your money & investments",
-      completed : false
+      completed: false
     },
     {
       name: "Rewards up to 70%",
-      completed : false
+      completed: false
     },
     {
       name: "No cards but mobile wallet",
-      completed : false
+      completed: false
     },
     {
       name: "Preserve you money value",
-      completed : false
+      completed: false
     },
   ];
 
-  favoriteFees!: string;
+
   fees: string[] = ['Subscription Fee', 'Subscription', 'Incremental'];
 
-  constructor(private _formBuilder: FormBuilder,private dataServise: DataFormService) {
-    merge(this.formGroup.statusChanges, this.formGroup.valueChanges)
+  constructor(private _formBuilder: FormBuilder, private dataServise: DataFormService) {
+    merge(this.stepOne.statusChanges, this.stepOne.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
   }
 
 
   updateErrorMessage() {
-    if (this.formGroup.hasError('required')) {
+    if (this.stepOne.hasError('required')) {
       this.errorMessage = 'You must enter a value';
-    } else if (this.formGroup.hasError('email')) {
+    } else if (this.stepOne.hasError('email')) {
       this.errorMessage = 'Not a valid email';
     } else {
       this.errorMessage = '';
@@ -92,33 +97,32 @@ export class FormPageComponent {
   };
 
 
-  getRandomNumber(): number {
-    return Math.floor(Math.random() * 10) + 1;
-}
-
-  details: DataForm[]= [];
   newData: DataForm = {
-    name: this.formGroup.value.firstCtrl,
-    phone: this.formGroup.value.phone,
-    email: this.formGroup.value.email,
-    country: this.formGroup.value.country,
+    name: this.stepOne.value.firstCtrl,
+    phone: this.stepOne.value.phone,
+    email: this.stepOne.value.email,
+    country: this.stepOne.value.country,
     interstedIn: ["Digitalize your money & investments"],
-    fees: this.favoriteFees,
-  } as unknown as DataForm;
+    fees: this.stepThree.value.fees,
+    suggestions: this.stepFour.value.sug,
+  };
 
-  saveData() : void{
+
+
+  saveingData(): void {
     const savedData = {
-      id: this.getRandomNumber(),
       name: this.newData.name,
       phone: this.newData.phone,
-      country : this.newData.country,
+      country: this.newData.country,
       email: this.newData.email,
-      interstedIn : [],
+      interstedIn: [],
       fees: this.newData.fees,
       suggestions: this.newData.suggestions,
     }
+
     this.dataServise.saveData(savedData).subscribe((response) => {
       console.log(response);
     })
   }
 }
+

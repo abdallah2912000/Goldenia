@@ -1,9 +1,9 @@
 <app-form-header />
 <section>
   <div class="container">
-    <form (ngSubmit)="saveData()" [formGroup]="formGroup">
-      <mat-stepper labelPosition="bottom" [linear]="isLinear" #stepper>
-        <mat-step [stepControl]="formGroup" AbstractControl>
+    <mat-stepper labelPosition="bottom" [linear]="true" #stepper>
+      <mat-step [stepControl]="stepOne">
+        <form [formGroup]="stepOne">
           <div class="row justify-content-center">
             <div class="col-md-6 col-sm-12">
               <div>
@@ -377,7 +377,7 @@
                     (blur)="updateErrorMessage()"
                     required
                   />
-                  @if (formGroup.invalid) {
+                  @if (stepOne.invalid) {
                   <mat-error>{{ errorMessage }}</mat-error>
                   }
                 </mat-form-field>
@@ -397,51 +397,70 @@
             </div>
           </div>
           <div>
-            <button matStepperNext type="button" class="btnn"> Next </button>
+            <button matStepperNext type="button" class="btnn">Next</button>
           </div>
-        </mat-step>
-        <mat-step [stepControl]="formGroup" AbstractControl>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="stepTwo">
+        <form [formGroup]="stepTwo">
           <div class="row justify-content-center">
             <div class="col-md-6 col-sm-12">
               <div>
                 <ng-template matStepLabel>Interested In</ng-template>
                 <h4>Interested In:</h4>
                 @for (item of interstedIn; track item) {
-                  <mat-checkbox [value]="item.name" [id]="item.name" [name]="item.name"
-                                [(ngModel)]="item.completed" [ngModelOptions]="{standalone: true}">
-                    {{ item.name }}
-                  </mat-checkbox> <br>
+                <mat-checkbox
+                  [value]="item.name"
+                  [id]="item.name"
+                  [name]="item.name"
+                  [(ngModel)]="item.completed"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  {{ item.name }}
+                </mat-checkbox>
+                <br />
                 }
               </div>
               <div>
-                <button  type="button" class="btnn" matStepperPrevious>Back</button>
-                <button  type="button" class="btnn" matStepperNext>Next</button>
+                <button type="button" class="btnn" matStepperPrevious>
+                  Back
+                </button>
+                <button type="button" class="btnn" matStepperNext>Next</button>
               </div>
             </div>
           </div>
-        </mat-step>
-        <mat-step [stepControl]="formGroup" AbstractControl>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="stepThree">
+        <form [formGroup]="stepThree">
           <div class="row justify-content-center">
             <div class="col-md-6 col-sm-12">
               <div>
                 <ng-template matStepLabel>Fees</ng-template>
                 <h4>Fees:</h4>
-                <label>Select the fee model you are most likely to use : </label>
+                <label
+                  >Select the fee model you are most likely to use :
+                </label>
                 <br />
-                <mat-radio-group [(ngModel)] = "favoriteFees" [ngModelOptions]="{ standalone: true }">
+                <mat-radio-group formControlName="fees">
                   @for (fee of fees; track fee) {
-                  <mat-radio-button [value]="fee">{{ fee }}</mat-radio-button> <br/>
+                  <mat-radio-button [value]="fee">{{ fee }}</mat-radio-button>
+                  <br />
                   }
                 </mat-radio-group>
               </div>
               <div>
-                <button  type="button" class="btnn" matStepperPrevious>Back</button>
-                <button  type="button" class="btnn" matStepperNext>Next</button>
+                <button type="button" class="btnn" matStepperPrevious>
+                  Back
+                </button>
+                <button type="button" class="btnn" matStepperNext>Next</button>
               </div>
             </div>
           </div>
-        </mat-step>
-        <mat-step [stepControl]="formGroup" AbstractControl>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="stepFour">
+        <form [formGroup]="stepFour">
           <div class="row justify-content-center">
             <div class="col">
               <div>
@@ -449,64 +468,76 @@
                 <h4>Suggestions:</h4>
                 <mat-form-field>
                   <mat-label>Your words are valuable.</mat-label>
-                  <textarea [ngModelOptions]="{standalone: true}" [(ngModel)]="newData.suggestions" title="any" matInput></textarea>
+                  <textarea
+                    formControlName="sug"
+                    title="any"
+                    matInput
+                  ></textarea>
                 </mat-form-field>
               </div>
               <div>
-                <button  type="button" class="btnn" matStepperPrevious>Back</button>
-                <button  type="button" class="btnn" matStepperNext>Next</button>
+                <button type="button" class="btnn" matStepperPrevious>
+                  Back
+                </button>
+                <button type="button" class="btnn" matStepperNext>Next</button>
               </div>
             </div>
           </div>
-        </mat-step>
-        <mat-step [stepControl]="formGroup" AbstractControl>
-          <div class="row justify-content-center">
-            <div class="col">
-              <div>
-                <ng-template matStepLabel>Review & Submit</ng-template>
-                <h4>Personal Information :</h4>
-                <div class="d-flex gap-3 align-items-baseline">
-                  <h6>Name :</h6>
-                  <p>{{ formGroup.value.firstCtrl }}</p>
-                </div>
-                <div class="d-flex align-items-baseline gap-3">
-                  <h6>Email :</h6>
-                  <p>{{ formGroup.value.email }}</p>
-                </div>
-                <div class="d-flex align-items-baseline gap-3">
-                  <h6>Country :</h6>
-                  <p> {{ formGroup.value.country }} </p>
-                </div>
-                <div class="d-flex align-items-baseline gap-3">
-                  <h6>Phone :</h6>
-                  <p> {{ formGroup.value.phone }} </p>
-                </div>
-                <hr />
-                <div>
-                  <h4>Interested In :</h4>
-                  <p>{{ newData.interstedIn[0] }}</p>
-                </div>
-                <hr />
-                <div>
-                  <h4>Suggestions :</h4>
-                  <p> {{newData.suggestions}} </p>
-                </div>
-                <hr />
-                <div class="d-flex align-items-baseline gap-3">
-                  <h3>Fees :</h3>
-                  <p> {{ favoriteFees }} </p>
-                </div>
-                <br />
+        </form>
+      </mat-step>
+      <mat-step>
+        <div class="row justify-content-center">
+          <div class="col">
+            <div>
+              <ng-template matStepLabel>Review & Submit</ng-template>
+              <h4>Personal Information :</h4>
+              <div class="d-flex gap-3 align-items-baseline">
+                <h6>Name :</h6>
+                <p>{{ stepOne.value.firstCtrl }}</p>
               </div>
-              <div>
-                <button  type="button" class="btnn" matStepperPrevious>Back</button>
-                <button  type="button" class="btnn" (click)="stepper.reset()">Reset</button>
-                <button  class="btnn" type="submit"> Submit </button>
+              <div class="d-flex align-items-baseline gap-3">
+                <h6>Email :</h6>
+                <p>{{ stepOne.value.email }}</p>
               </div>
+              <div class="d-flex align-items-baseline gap-3">
+                <h6>Country :</h6>
+                <p>{{ stepOne.value.country }}</p>
+              </div>
+              <div class="d-flex align-items-baseline gap-3">
+                <h6>Phone :</h6>
+                <p>{{ stepOne.value.phone }}</p>
+              </div>
+              <hr />
+              <div>
+                <h4>Interested In :</h4>
+                <p>{{ newData.interstedIn[0] }}</p>
+              </div>
+              <hr />
+              <div>
+                <h4>Suggestions :</h4>
+                <p>{{ stepFour.value.sug }}</p>
+              </div>
+              <hr />
+              <div class="d-flex align-items-baseline gap-3">
+                <h3>Fees :</h3>
+                <p>{{ stepThree.value.fees }}</p>
+              </div>
+              <br />
+            </div>
+            <div>
+              <button type="button" class="btnn" matStepperPrevious>
+                Back
+              </button>
+              <button type="button" class="btnn" (click)="stepper.reset()">
+                Reset
+              </button>
+              <button class="btnn" (click)="saveingData()" type="button">
+                Submit
+              </button>
             </div>
           </div>
-        </mat-step>
-      </mat-stepper>
-    </form>
+        </div>
+      </mat-step>
+    </mat-stepper>
   </div>
 </section>
