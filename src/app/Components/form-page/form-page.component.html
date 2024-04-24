@@ -408,13 +408,15 @@
               <div>
                 <ng-template matStepLabel>Interested In</ng-template>
                 <h4>Interested In:</h4>
-                @for (item of interstedIn; track item) {
+                @if (checkedBox.length === 0) {
+                <p class="text-danger">Must Select at least one.</p>
+                } @for (item of interstedIn; track item) {
                 <mat-checkbox
+                  (change)="checkBoxValue($event)"
                   [value]="item.name"
                   [id]="item.name"
                   [name]="item.name"
-                  [(ngModel)]="item.completed"
-                  [ngModelOptions]="{ standalone: true }"
+                  formControlName="intersts"
                 >
                   {{ item.name }}
                 </mat-checkbox>
@@ -510,7 +512,12 @@
               <hr />
               <div>
                 <h4>Interested In :</h4>
-                <p>{{ newData.interstedIn[0] }}</p>
+                @if (checkedBox.length !== 0) { @for (intersts of checkedBox;
+                track intersts) {
+                <p>{{ intersts }}</p>
+                } }@else {
+                <p class="text-danger">Must select at least one.</p>
+                }
               </div>
               <hr />
               <div>
@@ -531,7 +538,7 @@
               <button type="button" class="btnn" (click)="stepper.reset()">
                 Reset
               </button>
-              <button class="btnn" (click)="saveingData()" type="button">
+              <button class="btnn" (click)="savingData()" type="button">
                 Submit
               </button>
             </div>

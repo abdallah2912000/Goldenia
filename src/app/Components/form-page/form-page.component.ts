@@ -47,7 +47,9 @@ export class FormPageComponent {
     email: ['', [Validators.required, Validators.email]],
     country: ['', [Validators.required]],
   });
-  stepTwo = this._formBuilder.group({})
+  stepTwo = this._formBuilder.group({
+    intersts: ['', Validators.required]
+  })
   stepThree = this._formBuilder.group({
     fees: ['', [Validators.required]]
   })
@@ -56,7 +58,14 @@ export class FormPageComponent {
   })
 
 
-  interstes: string[] = [];
+  checkedBox: string[] = [];
+  checkBoxValue(event: any) {
+    if (event.checked) {
+      this.checkedBox.push(event.source.name);
+    } else {
+      this.checkedBox.splice(this.checkedBox.indexOf(event.source.name), 1);
+    }
+  }
   interstedIn: CheckBox[] = [
     {
       name: "Digitalize your money & investments",
@@ -102,14 +111,15 @@ export class FormPageComponent {
     phone: this.stepOne.value.phone,
     email: this.stepOne.value.email,
     country: this.stepOne.value.country,
-    interstedIn: ["Digitalize your money & investments"],
+    interstedIn: this.checkedBox,
     fees: this.stepThree.value.fees,
     suggestions: this.stepFour.value.sug,
   };
 
 
 
-  saveingData(): void {
+
+  savingData(): void {
     const savedData = {
       name: this.newData.name,
       phone: this.newData.phone,
@@ -119,10 +129,11 @@ export class FormPageComponent {
       fees: this.newData.fees,
       suggestions: this.newData.suggestions,
     }
-
-    this.dataServise.saveData(savedData).subscribe((response) => {
-      console.log(response);
-    })
+    if (this.checkedBox.length !== 0) {
+      this.dataServise.saveData(savedData).subscribe((response) => {
+        console.log(response);
+      })
+    }
   }
 }
 
