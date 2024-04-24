@@ -1,7 +1,7 @@
 <app-form-header />
 <section>
   <div class="container">
-    <form [formGroup]="formGroup">
+    <form (ngSubmit)="savedData()" [formGroup]="formGroup">
       <mat-stepper labelPosition="bottom" [linear]="isLinear" #stepper>
         <mat-step [stepControl]="formGroup" AbstractControl>
           <div class="row justify-content-center">
@@ -22,7 +22,7 @@
               <div>
                 <mat-form-field>
                   <mat-label>Country</mat-label>
-                  <mat-select>
+                  <mat-select formControlName="country">
                     <mat-option value="United States">United States</mat-option>
                     <mat-option value="Afghanistan">Afghanistan</mat-option>
                     <mat-option value="Albania">Albania</mat-option>
@@ -407,10 +407,10 @@
                 <ng-template matStepLabel>Interested In</ng-template>
                 <h4>Interested In:</h4>
                 @for (item of interstedIn; track item) {
-                  <!-- <mat-checkbox [value]="item.name" [id]="item.name" [name]="item.name"  [(ngModel)]="selectedIntrests" [ngModelOptions]="{standalone: true}">
+                  <mat-checkbox [value]="item.name" [id]="item.name" [name]="item.name"  
+                                [(ngModel)]="item.completed" [ngModelOptions]="{standalone: true}">
                     {{ item.name }}
-                  </mat-checkbox> <br> -->
-                  <input type="checkbox" [value]="item.name" [id]="item.name" [name]="item.name"  [(ngModel)]="selectedIntrests" [ngModelOptions]="{standalone: true}" [checked]="selectedIntrests.indexOf(item.name) >=0 "> {{item.name}}
+                  </mat-checkbox> <br>
                 }
               </div>
               <div>
@@ -430,7 +430,7 @@
                 <br />
                 <mat-radio-group [(ngModel)] = "favoriteFees" [ngModelOptions]="{ standalone: true }">
                   @for (fee of fees; track fee) {
-                  <mat-radio-button  [value]="fee">{{ fee }}</mat-radio-button> <br/>
+                  <mat-radio-button [value]="fee">{{ fee }}</mat-radio-button> <br/>
                   }
                 </mat-radio-group>
               </div>
@@ -449,7 +449,7 @@
                 <h4>Suggestions:</h4>
                 <mat-form-field>
                   <mat-label>Your words are valuable.</mat-label>
-                  <textarea title="any" matInput></textarea>
+                  <textarea [ngModelOptions]="{standalone: true}" [(ngModel)]="newData.suggestions" title="any" matInput></textarea>
                 </mat-form-field>
               </div>
               <div>
@@ -465,18 +465,37 @@
               <div>
                 <ng-template matStepLabel>Review & Submit</ng-template>
                 <h4>Personal Information :</h4>
-                <h6>Name :</h6>
-                <h6>Email :</h6>
-                <h6>Country :</h6>
-                <h6>Phone :</h6>
+                <div class="d-flex gap-3 align-items-baseline">
+                  <h6>Name :</h6>
+                  <p>{{ formGroup.value.firstCtrl }}</p>
+                </div>
+                <div class="d-flex align-items-baseline gap-3">
+                  <h6>Email :</h6>
+                  <p>{{ formGroup.value.email }}</p>
+                </div>
+                <div class="d-flex align-items-baseline gap-3">
+                  <h6>Country :</h6>
+                  <p> {{ formGroup.value.country }} </p>
+                </div>
+                <div class="d-flex align-items-baseline gap-3">
+                  <h6>Phone :</h6>
+                  <p> {{ formGroup.value.phone }} </p>
+                </div>
                 <hr />
+                <div>
                   <h4>Interested In :</h4>
-                  <p></p>
+                  <p>{{ newData.interstedIn[0] }}</p>
+                </div>
                 <hr />
-                <h4>Suggestions :</h4>
-                <p></p>
+                <div>
+                  <h4>Suggestions :</h4>
+                  <p> {{newData.suggestions}} </p>
+                </div>
                 <hr />
-                <h3>Fees :</h3>
+                <div class="d-flex align-items-baseline gap-3">
+                  <h3>Fees :</h3>
+                  <p> {{ favoriteFees }} </p>
+                </div>
                 <br />
               </div>
               <div>

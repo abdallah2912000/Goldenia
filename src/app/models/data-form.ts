@@ -4,7 +4,7 @@ export interface DataForm {
     phone: number,
     country : string,
     email: string,
-    interstedIn : string,
+    interstedIn : string[],
     fees: string,
     suggestions: string
 }

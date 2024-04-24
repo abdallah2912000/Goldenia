@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormHeaderComponent } from './form-header/form-header.component';
-import {FormBuilder, Validators, FormsModule, ReactiveFormsModule, FormControl,FormArray} from '@angular/forms';
+import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -13,6 +13,9 @@ import { JsonPipe } from '@angular/common';
 import {MatRadioModule} from '@angular/material/radio';
 import { DataForm } from '../../models/data-form';
 import { CheckBox } from '../../models/check-box';
+import { DataFormService } from '../../service/data-form.service';
+
+
 
 @Component({
   selector: 'app-form-page',
@@ -28,27 +31,27 @@ import { CheckBox } from '../../models/check-box';
     MatSelectModule,
     MatCheckboxModule,
     JsonPipe,
-    MatRadioModule
+    MatRadioModule,
   ],
   templateUrl: './form-page.component.html',
   styleUrl: './form-page.component.css'
 })
-export class FormPageComponent {
+export class FormPageComponent implements OnInit {
   [x: string]: any;
-  // email = new FormControl('', [Validators.required, Validators.email]);
-  errorMessage = '';
 
+  errorMessage = '';
 
   formGroup = this._formBuilder.group({
     firstCtrl: ['', [Validators.required]],
     phone: ['', [Validators.required]],
     email: ['',[Validators.required, Validators.email]],
+    country : ['', [Validators.required]]
   });
 
 
   isLinear: boolean = true;
 
-  intersted!:string[];
+  interstes:string[] = [];
   interstedIn: CheckBox[] = [
     {
       name: "Digitalize your money & investments",
@@ -67,32 +70,19 @@ export class FormPageComponent {
       completed : false
     },
   ];
-  selectedIntrests: string[] =[]  
-
-  onChecked(){
-    for(let i = 0; i >= this.interstedIn.length; i++) {
-      if(this.interstedIn[i].completed === true){
-        this.intersted.push(this.interstedIn[i].name);
-      }
-    }
-  }
   
-
   favoriteFees!: string;
   fees: string[] = ['Subscription Fee', 'Subscription', 'Incremental'];
-
   
-
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(private _formBuilder: FormBuilder,private dataServise: DataFormService) {
     merge(this.formGroup.statusChanges, this.formGroup.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
   }
 
-
-  // if (this.email.value === "") {
-  //   this.isLinear = true;
-  // }
+  ngOnInit(): void {
+    
+  }
 
 
   updateErrorMessage() {
@@ -103,16 +93,36 @@ export class FormPageComponent {
     } else {
       this.errorMessage = '';
     }
+  };
+
+
+  getRandomNumber(): number {
+    return Math.floor(Math.random() * 10) + 1;
+}
+
+  details: DataForm[]= [];
+  newData: DataForm = {
+    name: this.formGroup.value.firstCtrl,
+    phone: this.formGroup.value.phone,
+    email: this.formGroup.value.email,
+    country: this.formGroup.value.country,
+    interstedIn: ["Digitalize your money & investments"],
+    fees: this.favoriteFees,
+  } as unknown as DataForm;
+
+  savedData() : void{
+    const savedData = {
+      id: this.getRandomNumber(),
+      name: this.newData.name,
+      phone: this.newData.phone,
+      country : this.newData.country,
+      email: this.newData.email,
+      interstedIn : [],
+      fees: this.newData.fees,
+      suggestions: this.newData.suggestions,
+    }
+    this.dataServise.saveData(savedData).subscribe((data) => {
+      this.details.push(data);
+    })
   }
-
-  data: [] = [];
-  newData: DataForm = {} as DataForm
-  
-  onChange(){
-    // if(){
-
-    // }
-  }
-  
-
 }
