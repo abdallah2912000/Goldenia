@@ -1,7 +1,7 @@
 <app-form-header />
 <section>
   <div class="container">
-    <form (ngSubmit)="savedData()" [formGroup]="formGroup">
+    <form (ngSubmit)="saveData()" [formGroup]="formGroup">
       <mat-stepper labelPosition="bottom" [linear]="isLinear" #stepper>
         <mat-step [stepControl]="formGroup" AbstractControl>
           <div class="row justify-content-center">
@@ -407,7 +407,7 @@
                 <ng-template matStepLabel>Interested In</ng-template>
                 <h4>Interested In:</h4>
                 @for (item of interstedIn; track item) {
-                  <mat-checkbox [value]="item.name" [id]="item.name" [name]="item.name"  
+                  <mat-checkbox [value]="item.name" [id]="item.name" [name]="item.name"
                                 [(ngModel)]="item.completed" [ngModelOptions]="{standalone: true}">
                     {{ item.name }}
                   </mat-checkbox> <br>

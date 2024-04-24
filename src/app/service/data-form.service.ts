@@ -10,15 +10,19 @@ import { DataForm } from '../models/data-form';
 })
 export class DataFormService {
 
-  private urlApi = "https://mohammed-abdelhay-s-workspace-vhgo9u.us-east-1.xata.sh/db/goldenia-waitlist:main/tables/waitlist/data?columns=id";
-  private headers = new HttpHeaders({
-    "Content-Type": "application/json",
-    Authorization: "Bearer xau_3Mx5H39ha8caIPDqYWXwxnUMlV4Qih2M"
-  });
+  // private urlApi = "https://mohammed-abdelhay-s-workspace-vhgo9u.us-east-1.xata.sh/db/goldenia-waitlist:main/tables/waitlist/data?columns=id";
+
 
   constructor(private httpClient: HttpClient) { }
 
-  saveData(form: DataForm): Observable<DataForm> {
-    return this.httpClient.post<DataForm>(this.urlApi, form, { headers: this.headers });
+  saveData(form: DataForm): Observable<any> {
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer xau_3Mx5H39ha8caIPDqYWXwxnUMlV4Qih2M"
+    });
+    const url = 'https://mohammed-abdelhay-s-workspace-vhgo9u.us-east-1.xata.sh/db/goldenia-waitlist:main/tables/waitlist/data?columns=id';
+    const body = JSON.stringify({ data: JSON.stringify(form) });
+
+    return this.httpClient.post(url, body, { headers });
   }
 }

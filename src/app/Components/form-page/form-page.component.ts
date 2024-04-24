@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormHeaderComponent } from './form-header/form-header.component';
 import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
@@ -36,7 +36,7 @@ import { DataFormService } from '../../service/data-form.service';
   templateUrl: './form-page.component.html',
   styleUrl: './form-page.component.css'
 })
-export class FormPageComponent implements OnInit {
+export class FormPageComponent {
   [x: string]: any;
 
   errorMessage = '';
@@ -70,18 +70,14 @@ export class FormPageComponent implements OnInit {
       completed : false
     },
   ];
-  
+
   favoriteFees!: string;
   fees: string[] = ['Subscription Fee', 'Subscription', 'Incremental'];
-  
+
   constructor(private _formBuilder: FormBuilder,private dataServise: DataFormService) {
     merge(this.formGroup.statusChanges, this.formGroup.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
-  }
-
-  ngOnInit(): void {
-    
   }
 
 
@@ -110,7 +106,7 @@ export class FormPageComponent implements OnInit {
     fees: this.favoriteFees,
   } as unknown as DataForm;
 
-  savedData() : void{
+  saveData() : void{
     const savedData = {
       id: this.getRandomNumber(),
       name: this.newData.name,
@@ -121,8 +117,8 @@ export class FormPageComponent implements OnInit {
       fees: this.newData.fees,
       suggestions: this.newData.suggestions,
     }
-    this.dataServise.saveData(savedData).subscribe((data) => {
-      this.details.push(data);
+    this.dataServise.saveData(savedData).subscribe((response) => {
+      console.log(response);
     })
   }
 }
